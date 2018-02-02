@@ -146,13 +146,46 @@ img {
 	-moz-transform: scale(0.9, 0.9);
 }
 
-.btn-delete {	/* Styling for delete button */
-	background-color: #E1EDC2;
-	color: #212121;
+/****** Form Styling ******/
+
+.form-container {	/* Styling for the div that contains the buttons */
+	margin: -10px auto 0 auto;
+	text-align: center;
+}
+
+.btn {	/* Styling for buttons */
+	margin: 0 8px;
+	color: white;
+	background-color: #BFD73B;
+	display: inline-block;
+	border: 0;
+	font-size: 14px;
+	border-radius: 3px;
+	padding: 10px 5px;
+	width: 100px;
+	font-weight: 500;
+}
+
+.btn:focus {	/* Remove outline when hovering over button */
+	outline: none;
+}
+
+.btn:active {	/* Scale the button down by 10% when clicking on button */
+	transform: scale(0.9, 0.9);
+	-webkit-transform: scale(0.9, 0.9);
+	-moz-transform: scale(0.9, 0.9);
 }
 
 #click-nbr {
 	font-weight: 400;
+}
+
+input {
+	width: 400px;
+}
+
+textarea {
+	width: 400px;
 }
 
 /****** Profile Styling ******/

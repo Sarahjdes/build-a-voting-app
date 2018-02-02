@@ -1,7 +1,9 @@
 'use strict';
 
 var path = process.cwd();
-var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+var PollHandler = require(path + '/app/controllers/pollHandler.server.js');
+
+var bodyParser = require('body-parser');
 
 module.exports = function (app, passport) {
 
@@ -13,7 +15,10 @@ module.exports = function (app, passport) {
 		}
 	}
 
-	var clickHandler = new ClickHandler();
+	var pollHandler = new PollHandler();
+	
+	app.use(bodyParser.json()); // support json encoded bodies
+	app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 	app.route('/')
 		.get(isLoggedIn, function (req, res) {
@@ -30,15 +35,18 @@ module.exports = function (app, passport) {
 			req.logout();
 			res.redirect('/login');
 		});
+		
+	app.route('/new')
+		.get(isLoggedIn, function (req, res) {
+			res.sendFile(path + '/public/new.html');
+		});
+		
+	app.route('/new/creating')
+		.post(isLoggedIn, pollHandler.createPoll);
 
 	app.route('/profile')
 		.get(isLoggedIn, function (req, res) {
 			res.sendFile(path + '/public/profile.html');
-		});
-
-	app.route('/api/:id')
-		.get(isLoggedIn, function (req, res) {
-			res.json(req.user.github);
 		});
 
 	app.route('/auth/github')
@@ -49,9 +57,4 @@ module.exports = function (app, passport) {
 			successRedirect: '/',
 			failureRedirect: '/login'
 		}));
-
-	app.route('/api/:id/clicks')
-		.get(isLoggedIn, clickHandler.getClicks)
-		.post(isLoggedIn, clickHandler.addClick)
-		.delete(isLoggedIn, clickHandler.resetClicks);
 };
